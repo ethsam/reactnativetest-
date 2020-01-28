@@ -1,59 +1,44 @@
-import { Platform } from 'react-native';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import React, { Component } from 'react';
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default class App extends Component {
+export default class Getposition extends Component {
     state = {
-        location: null,
-        errorMessage: null,
+        location: null
     };
 
-    UNSAFE_componentWillMount() {
-        if (Platform.OS === 'android' && !Constants.isDevice) {
-            this.setState({
-                errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-            });
-        } else {
-            this._getLocationAsync();
-        }
-    }
+    findCoordinates = () => {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const location = JSON.stringify(position);
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-                errorMessage: 'Permission to access location was denied',
-            });
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
+                this.setState({ location });
+            },
+            error => Alert.alert(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
     };
 
     render() {
-        let text = 'Waiting..';
-        let geoextract;
-        let latitude;
-        let longitude;
-        if (this.state.errorMessage) {
-            text = this.state.errorMessage;
-        } else if (this.state.location) {
-            text = this.state.location;
-            geoextract = text.coords;
-            latitude = JSON.stringify(geoextract.latitude);
-            longitude = JSON.stringify(geoextract.longitude);
-            // text = JSON.stringify(this.state.location);
-        }
-
-        // return (
-        //     <View>
-        //         <Text>{ latitude }</Text>
-        //         <Text>{ longitude }</Text>
-        //     </View>
-        // );
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity onPress={this.findCoordinates}>
+                    <Text style={styles.welcome}>Find My Coords?</Text>
+                    <Text>Location: {this.state.location}</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 }
 
-// import getPositionComponent from '/components/getPositionComponent';
-
-export default getPositionComponent;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
+    }
+})

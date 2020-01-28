@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 
 const data = [
@@ -18,21 +18,24 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 2;
-export default class Homemenu extends React.Component {
+
+export default class Sommaire extends Component {
+
     renderItem = ({ item, index }) => {
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
+
         return (
-            <View
-                style={styles.item}
-            >
+            <View style={styles.item}>
                 <Text style={styles.itemText}>{item.key}</Text>
+                <Text style={styles.itemText}></Text>
             </View>
         );
     };
 
     render() {
+        // let lati = GetpositionHome
         return (
             <FlatList
                 data={formatData(data, numColumns)}
@@ -42,6 +45,7 @@ export default class Homemenu extends React.Component {
             />
         );
     }
+
 }
 
 const styles = StyleSheet.create({

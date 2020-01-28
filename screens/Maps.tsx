@@ -1,9 +1,10 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
 import Constants from 'expo-constants';
+import { Component } from 'react';
 
 
-export default class App extends Component {
+export default class Maps extends Component {
   state = {
     mapRegion: null,
     hasLocationPermissions: false,
@@ -82,5 +83,3 @@ const styles = StyleSheet.create({
     color: '#34495e',
   },
 });
-
-export default mapPage;
