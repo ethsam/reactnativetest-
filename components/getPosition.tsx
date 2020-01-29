@@ -20,12 +20,10 @@ export default class Getposition extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
                 <TouchableOpacity onPress={this.findCoordinates}>
                     <Text style={styles.welcome}>Find My Coords?</Text>
                     <Text>Location: {this.state.location}</Text>
                 </TouchableOpacity>
-            </View>
         );
     }
 }
